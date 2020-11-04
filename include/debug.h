@@ -29,8 +29,8 @@ typedef struct
 {
     uint32_t baudrate;
 } DEBUG_config_t;
-#endif
 
 void DEBUG_output(const char *format, ...);
 void DEBUG_halt(const char *module, uint16_t line);
 void DEBUG_init(const DEBUG_config_t *config);
+#endif
