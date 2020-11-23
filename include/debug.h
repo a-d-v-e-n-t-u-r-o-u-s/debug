@@ -35,9 +35,11 @@
 
 #define DEBUG_1WIRE_MGR_LEVEL   DL_VERBOSE
 #define DEBUG_APP_LEVEL         DL_VERBOSE
+#define DEBUG_MAIN_LEVEL        DL_VERBOSE
 
 #define DEBUG_1WIRE_MGR_ENABLED 1
 #define DEBUG_APP_ENABLED       1
+#define DEBUG_MAIN_ENABLED      1
 
 #if DEBUG_GLOBALLY_ENABLED
 #define ASSERT(condition)                                               \
