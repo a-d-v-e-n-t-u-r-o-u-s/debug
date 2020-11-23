@@ -27,13 +27,33 @@
 
 #define DEBUG_GLOBALLY_ENABLED 1
 
+#define DL_ERROR        0
+#define DL_WARNING      1
+#define DL_INFO         2
+#define DL_DEBUG        3
+#define DL_VERBOSE      4
+
+#define DEBUG_1WIRE_MGR_LEVEL   DL_VERBOSE
+#define DEBUG_APP_LEVEL         DL_VERBOSE
+
+#define DEBUG_1WIRE_MGR_ENABLED 1
+#define DEBUG_APP_ENABLED       1
+
 #if DEBUG_GLOBALLY_ENABLED
-#define ASSERT(condition)                                       \
-    do                                                          \
-    {                                                           \
-        condition ? condition :DEBUG_halt(DEBUG_APP_ID, __LINE__) ;   \
+#define ASSERT(condition)                                               \
+    do                                                                  \
+    {                                                                   \
+        condition ? condition :DEBUG_halt(DEBUG_APP_ID, __LINE__) ;     \
     } while(0)
-#define DEBUG(str, ...) DEBUG_output(str, __VA_ARGS__)
+#if DEBUG_ENABLED
+#define DEBUG(level, str, ...)              \
+    if(level <= DEBUG_LEVEL)                \
+    {                                       \
+        DEBUG_output(str, __VA_ARGS__);     \
+    }
+#else
+#define DEBUG(level, str, ...)
+#endif
 #else
 #define ASSERT(condition)
 #define DEBUG(str, ...)
