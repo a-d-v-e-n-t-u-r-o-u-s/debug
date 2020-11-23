@@ -25,6 +25,18 @@
 
 #include <stdint.h>
 
+#define DEBUG_GLOBALLY_ENABLED 1
+
+#if DEBUG_GLOBALLY_ENABLED
+#define ASSERT(condition)                                       \
+    do                                                          \
+    {                                                           \
+        condition ? condition :DEBUG_halt(DEBUG_APP_ID, __LINE__) ;   \
+    } while(0)
+#else
+#define ASSERT(condition)
+#endif
+
 typedef struct
 {
     uint32_t baudrate;
