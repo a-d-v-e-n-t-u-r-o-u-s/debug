@@ -33,8 +33,10 @@
     {                                                           \
         condition ? condition :DEBUG_halt(DEBUG_APP_ID, __LINE__) ;   \
     } while(0)
+#define DEBUG(str, ...) DEBUG_output(str, __VA_ARGS__)
 #else
 #define ASSERT(condition)
+#define DEBUG(str, ...)
 #endif
 
 typedef struct
