@@ -87,7 +87,9 @@ void DEBUG_dump(const uint8_t *buffer, uint8_t size)
     }
     else
     {
-        debug_buffer[offset+1] = '\n';
+        offset++;
+        debug_buffer[offset] = '\n';
+        offset++;
     }
 
     for(uint8_t i = 0; i < offset ; i++)
