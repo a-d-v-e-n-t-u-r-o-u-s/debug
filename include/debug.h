@@ -53,12 +53,19 @@
     {                                       \
         DEBUG_output(str, __VA_ARGS__);     \
     }
+#define DEBUG_DUMP(level, buffer, size)     \
+    if(level <= DEBUG_LEVEL)                \
+    {                                       \
+        DEBUG_dump(buffer, size);           \
+    }
 #else
 #define DEBUG(level, str, ...)
+#define DEBUG_DUMP(level, buffer, size)
 #endif
 #else
 #define ASSERT(condition)
 #define DEBUG(str, ...)
+#define DEBUG_DUMP(level, buffer, size)
 #endif
 
 typedef struct
@@ -67,6 +74,7 @@ typedef struct
 } DEBUG_config_t;
 
 void DEBUG_output(const char *format, ...);
+void DEBUG_dump(const uint8_t *buffer, uint8_t size);
 void DEBUG_halt(const char *module, uint16_t line);
 void DEBUG_init(const DEBUG_config_t *config);
 #endif

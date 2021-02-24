@@ -29,7 +29,8 @@
 #include <avr/pgmspace.h>
 
 /*! \todo pass the buffer value from outside */
-#define DEBUG_BUFFER_SIZE  64
+#define DEBUG_BUFFER_SIZE       (64U)
+#define RESERVED_CHARS_SIZE     (2U)
 
 static char debug_buffer[DEBUG_BUFFER_SIZE];
 
@@ -40,8 +41,8 @@ void DEBUG_output(const char *format, ...)
 
     memset(debug_buffer, 0u, DEBUG_BUFFER_SIZE);
 
-    uint8_t reserved_size = 2U;
-    int written = vsnprintf(debug_buffer, DEBUG_BUFFER_SIZE - reserved_size - 1U, format, args);
+    int written = vsnprintf(debug_buffer,
+            DEBUG_BUFFER_SIZE - RESERVED_CHARS_SIZE - 1U, format, args);
     va_end(args);
 
     if(written > DEBUG_BUFFER_SIZE)
@@ -52,6 +53,44 @@ void DEBUG_output(const char *format, ...)
     }
 
     for(uint8_t i = 0; i < written ; i++)
+    {
+        USART_transmit((uint8_t)debug_buffer[i]);
+    }
+}
+
+/*! \todo enhance this quick implementation later */
+void DEBUG_dump(const uint8_t *buffer, uint8_t size)
+{
+    uint8_t offset = 0u;
+    memset(debug_buffer, 0u, DEBUG_BUFFER_SIZE);
+
+    while(size != 0U)
+    {
+        uint8_t left_space = DEBUG_BUFFER_SIZE - RESERVED_CHARS_SIZE - offset - 1U;
+        uint8_t written = snprintf(&debug_buffer[offset], left_space, "0x%02x ",*buffer++);
+
+        offset += written;
+
+        if(offset > DEBUG_BUFFER_SIZE)
+        {
+            offset = DEBUG_BUFFER_SIZE;
+            break;
+        }
+
+        size--;
+    }
+
+    if(offset == DEBUG_BUFFER_SIZE)
+    {
+        debug_buffer[DEBUG_BUFFER_SIZE - 3U] = '~';
+        debug_buffer[DEBUG_BUFFER_SIZE - 2U] = '\n';
+    }
+    else
+    {
+        debug_buffer[offset+1] = '\n';
+    }
+
+    for(uint8_t i = 0; i < offset ; i++)
     {
         USART_transmit((uint8_t)debug_buffer[i]);
     }
