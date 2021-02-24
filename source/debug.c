@@ -25,18 +25,31 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <string.h>
 #include <avr/pgmspace.h>
 
-#define DEBUG_BUFFER_SIZE  UINT8_MAX
+/*! \todo pass the buffer value from outside */
+#define DEBUG_BUFFER_SIZE  64
+
+static char debug_buffer[DEBUG_BUFFER_SIZE];
 
 void DEBUG_output(const char *format, ...)
 {
-    char debug_buffer[DEBUG_BUFFER_SIZE] = {0};
-
     va_list args;
     va_start( args, format);
-    int written = vsnprintf(debug_buffer, DEBUG_BUFFER_SIZE, format, args);
+
+    memset(debug_buffer, 0u, DEBUG_BUFFER_SIZE);
+
+    uint8_t reserved_size = 2U;
+    int written = vsnprintf(debug_buffer, DEBUG_BUFFER_SIZE - reserved_size - 1U, format, args);
     va_end(args);
+
+    if(written > DEBUG_BUFFER_SIZE)
+    {
+        written = DEBUG_BUFFER_SIZE;
+        debug_buffer[DEBUG_BUFFER_SIZE - 3U] = '~';
+        debug_buffer[DEBUG_BUFFER_SIZE - 2U] = '\n';
+    }
 
     for(uint8_t i = 0; i < written ; i++)
     {
