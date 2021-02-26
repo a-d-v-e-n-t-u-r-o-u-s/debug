@@ -75,6 +75,6 @@ typedef struct
 
 void DEBUG_output(const char *format, ...);
 void DEBUG_dump(const uint8_t *buffer, uint8_t size);
-void DEBUG_halt(const char *module, uint16_t line);
+void DEBUG_halt(const char *module, uint16_t line) __attribute__((noreturn));
 void DEBUG_init(const DEBUG_config_t *config);
 #endif
