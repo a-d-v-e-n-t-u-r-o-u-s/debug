@@ -59,15 +59,17 @@ void DEBUG_output(const char *format, ...)
 }
 
 /*! \todo enhance this quick implementation later */
-void DEBUG_dump(const uint8_t *buffer, uint8_t size)
+void DEBUG_dump(const uint8_t *buffer, uint8_t size, bool is_hex)
 {
     uint8_t offset = 0u;
+    uint8_t cnt = 0u;
     memset(debug_buffer, 0u, DEBUG_BUFFER_SIZE);
 
     while(size != 0U)
     {
         uint8_t left_space = DEBUG_BUFFER_SIZE - RESERVED_CHARS_SIZE - offset - 1U;
-        uint8_t written = snprintf(&debug_buffer[offset], left_space, "0x%02x ",*buffer++);
+        uint8_t written = snprintf(&debug_buffer[offset], left_space,
+                is_hex ? "%d:0x%02x\n" : "%d:%d\n" ,cnt, *buffer++);
 
         offset += written;
 
@@ -78,6 +80,7 @@ void DEBUG_dump(const uint8_t *buffer, uint8_t size)
         }
 
         size--;
+        cnt++;
     }
 
     if(offset == DEBUG_BUFFER_SIZE)

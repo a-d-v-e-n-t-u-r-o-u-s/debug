@@ -24,6 +24,7 @@
 #define DEBUG_H
 
 #include <stdint.h>
+#include <stdbool.h>
 
 #define DEBUG_GLOBALLY_ENABLED 1
 
@@ -53,19 +54,26 @@
     {                                       \
         DEBUG_output(str, __VA_ARGS__);     \
     }
-#define DEBUG_DUMP(level, buffer, size)     \
+#define DEBUG_DUMP_HEX(level, buffer, size) \
     if(level <= DEBUG_LEVEL)                \
     {                                       \
-        DEBUG_dump(buffer, size);           \
+        DEBUG_dump(buffer, size, true);     \
+    }
+#define DEBUG_DUMP_DEC(level, buffer, size) \
+    if(level <= DEBUG_LEVEL)                \
+    {                                       \
+        DEBUG_dump(buffer, size, false);    \
     }
 #else
 #define DEBUG(level, str, ...)
-#define DEBUG_DUMP(level, buffer, size)
+#define DEBUG_DUMP_HEX(level, buffer, size)
+#define DEBUG_DUMP_DEC(level, buffer, size)
 #endif
 #else
 #define ASSERT(condition)
 #define DEBUG(str, ...)
-#define DEBUG_DUMP(level, buffer, size)
+#define DEBUG_DUMP_HEX(level, buffer, size)
+#define DEBUG_DUMP_DEC(level, buffer, size)
 #endif
 
 typedef struct
@@ -74,7 +82,7 @@ typedef struct
 } DEBUG_config_t;
 
 void DEBUG_output(const char *format, ...);
-void DEBUG_dump(const uint8_t *buffer, uint8_t size);
+void DEBUG_dump(const uint8_t *buffer, uint8_t size, bool is_hex);
 void DEBUG_halt(const char *module, uint16_t line) __attribute__((noreturn));
 void DEBUG_init(const DEBUG_config_t *config);
 #endif
