@@ -34,9 +34,9 @@
 #define DL_DEBUG        3
 #define DL_VERBOSE      4
 
-#define DEBUG_1WIRE_MGR_LEVEL   DL_VERBOSE
-#define DEBUG_APP_LEVEL         DL_VERBOSE
-#define DEBUG_MAIN_LEVEL        DL_VERBOSE
+#define DEBUG_1WIRE_MGR_LEVEL   DL_INFO
+#define DEBUG_APP_LEVEL         DL_INFO
+#define DEBUG_MAIN_LEVEL        DL_INFO
 
 #define DEBUG_1WIRE_MGR_ENABLED 1
 #define DEBUG_APP_ENABLED       1
