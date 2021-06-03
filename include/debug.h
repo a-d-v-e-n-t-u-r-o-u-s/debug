@@ -34,15 +34,25 @@
 #define DL_DEBUG        3
 #define DL_VERBOSE      4
 
-#define DEBUG_1WIRE_MGR_LEVEL   DL_WARNING
+#define DEBUG_1WIRE_MGR_LEVEL   DL_DEBUG
 #define DEBUG_APP_LEVEL         DL_INFO
 #define DEBUG_MAIN_LEVEL        DL_INFO
 #define DEBUG_STAT_LEVEL        DL_INFO
+#define DEBUG_SYS_LEVEL         DL_WARNING
+#define DEBUG_GPIO_LEVEL        DL_WARNING
+#define DEBUG_DS1302_LEVEL      DL_WARNING
+#define DEBUG_SSDM_LEVEL        DL_WARNING
+#define DEBUG_INPM_LEVEL        DL_WARNING
 
 #define DEBUG_1WIRE_MGR_ENABLED 1
-#define DEBUG_APP_ENABLED       1
-#define DEBUG_MAIN_ENABLED      1
-#define DEBUG_STAT_ENABLED      1
+#define DEBUG_APP_ENABLED       0
+#define DEBUG_MAIN_ENABLED      0
+#define DEBUG_STAT_ENABLED      0
+#define DEBUG_SYS_ENABLED       0
+#define DEBUG_GPIO_ENABLED      0
+#define DEBUG_DS1302_ENABLED    0
+#define DEBUG_SSDM_ENABLED      0
+#define DEBUG_INPM_ENABLED      0
 
 #if DEBUG_GLOBALLY_ENABLED
 #define ASSERT(condition)                                               \

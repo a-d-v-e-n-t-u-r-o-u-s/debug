@@ -20,6 +20,10 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+/*! \todo currently added in order to silence compiler warning */
+#define DEBUG_ENABLED   0
+#define DEBUG_LEVEL     DL_WARNING
+
 #include "debug.h"
 #include "usart.h"
 #include <stdarg.h>
