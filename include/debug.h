@@ -26,7 +26,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#define DEBUG_GLOBALLY_ENABLED 1
+#define DEBUG_GLOBALLY_ENABLED 0
 
 #define DL_ERROR        0
 #define DL_WARNING      1
@@ -44,7 +44,7 @@
 #define DEBUG_SSDM_LEVEL        DL_WARNING
 #define DEBUG_INPM_LEVEL        DL_WARNING
 
-#define DEBUG_1WIRE_MGR_ENABLED 1
+#define DEBUG_1WIRE_MGR_ENABLED 0
 #define DEBUG_APP_ENABLED       0
 #define DEBUG_MAIN_ENABLED      0
 #define DEBUG_STAT_ENABLED      0
