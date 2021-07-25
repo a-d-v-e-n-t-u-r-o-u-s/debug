@@ -26,7 +26,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#define DEBUG_GLOBALLY_ENABLED 0
+#define DEBUG_GLOBALLY_ENABLED 1
 
 #define DL_ERROR        0
 #define DL_WARNING      1
