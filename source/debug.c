@@ -118,7 +118,10 @@ void DEBUG_halt(const char *module, uint16_t line)
  */
 
     DEBUG_output("%s : Halt at %d line \n", module, line);
-    while(true);
+
+    while(true)
+    {
+    }
 }
 
 void DEBUG_init(const DEBUG_config_t *config)
