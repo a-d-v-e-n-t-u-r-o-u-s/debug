@@ -121,6 +121,7 @@ void DEBUG_halt(const char *module, uint16_t line)
 
     while(true)
     {
+        /* the edge of the world */
     }
 }
 
