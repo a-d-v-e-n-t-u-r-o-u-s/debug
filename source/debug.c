@@ -20,7 +20,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-/*! \todo currently added in order to silence compiler warning */
+/*! TODO(DB) currently added in order to silence compiler warning */
 #define DEBUG_ENABLED   0
 #define DEBUG_LEVEL     DL_WARNING
 
@@ -32,7 +32,7 @@
 #include <string.h>
 #include <avr/pgmspace.h>
 
-/*! \todo pass the buffer value from outside */
+/*! TODO(DB) pass the buffer value from outside */
 #define DEBUG_BUFFER_SIZE       (64U)
 #define RESERVED_CHARS_SIZE     (2U)
 
@@ -62,19 +62,22 @@ void DEBUG_output(const char *format, ...)
     }
 }
 
-/*! \todo enhance this quick implementation later */
+/*! TODO(DB) enhance this quick implementation later */
 void DEBUG_dump(const uint8_t *buffer, uint8_t size, bool is_hex)
 {
     uint8_t offset = 0u;
     uint8_t cnt = 0u;
+    const uint8_t *buff = buffer;
+    uint8_t len = size;
     memset(debug_buffer, 0u, DEBUG_BUFFER_SIZE);
 
-    while(size != 0U)
+    while(len != 0U)
     {
         uint8_t left_space = DEBUG_BUFFER_SIZE - RESERVED_CHARS_SIZE - offset - 1U;
         uint8_t written = snprintf(&debug_buffer[offset], left_space,
-                is_hex ? "%d:0x%02x\n" : "%d:%d\n" ,cnt, *buffer++);
+                is_hex ? "%d:0x%02x\n" : "%d:%d\n" ,cnt, *buff);
 
+        buff++;
         offset += written;
 
         if(offset > DEBUG_BUFFER_SIZE)
@@ -83,7 +86,7 @@ void DEBUG_dump(const uint8_t *buffer, uint8_t size, bool is_hex)
             break;
         }
 
-        size--;
+        len--;
         cnt++;
     }
 
@@ -107,16 +110,7 @@ void DEBUG_dump(const uint8_t *buffer, uint8_t size, bool is_hex)
 
 void DEBUG_halt(const char *module, uint16_t line)
 {
-    /*! \todo change this naive implementation */
-/*
- *    char tmp[5] = {0};
- *
- *    for(uint8_t i = 0; i < 4; i++, module++)
- *    {
- *        tmp[i] = pgm_read_byte(module);
- *    }
- */
-
+    /*! TODO(DB) change this naive implementation */
     DEBUG_output("%s : Halt at %d line \n", module, line);
 
     while(true)
