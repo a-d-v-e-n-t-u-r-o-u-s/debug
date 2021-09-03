@@ -26,7 +26,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#define DEBUG_GLOBALLY_ENABLED 1
+#define DEBUG_GLOBALLY_ENABLED 0
+#define ASSERTS_GLOBALLY_ENABLED 0
 
 #define DL_ERROR        0
 #define DL_WARNING      1
@@ -55,11 +56,15 @@
 #define DEBUG_INPM_ENABLED      0
 
 #if DEBUG_GLOBALLY_ENABLED
+#if ASSERTS_GLOBALLY_ENABLED
 #define ASSERT(condition)                                               \
     do                                                                  \
     {                                                                   \
         condition ? condition :DEBUG_halt(DEBUG_APP_ID, __LINE__) ;     \
     } while(0)
+#else
+#define ASSERT(condition)
+#endif
 #if DEBUG_ENABLED
 #define DEBUG(level, str, ...)              \
     if(level <= DEBUG_LEVEL)                \
