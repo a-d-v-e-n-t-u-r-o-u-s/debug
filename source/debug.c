@@ -20,7 +20,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-/*! TODO(DB) currently added in order to silence compiler warning */
+/*! \todo (DB) currently added in order to silence compiler warning */
 #define DEBUG_ENABLED   0
 #define DEBUG_LEVEL     DL_WARNING
 
@@ -32,7 +32,7 @@
 #include <string.h>
 #include <avr/pgmspace.h>
 
-/*! TODO(DB) pass the buffer value from outside */
+/*! \todo (DB) pass the buffer value from outside */
 #define DEBUG_BUFFER_SIZE       (64U)
 #define RESERVED_CHARS_SIZE     (2U)
 
@@ -62,7 +62,7 @@ void DEBUG_output(const char *format, ...)
     }
 }
 
-/*! TODO(DB) enhance this quick implementation later */
+/*! \todo (DB) enhance this quick implementation later */
 void DEBUG_dump(const uint8_t *buffer, uint8_t size, bool is_hex)
 {
     uint8_t offset = 0u;
@@ -110,7 +110,7 @@ void DEBUG_dump(const uint8_t *buffer, uint8_t size, bool is_hex)
 
 void DEBUG_halt(const char *module, uint16_t line)
 {
-    /*! TODO(DB) change this naive implementation */
+    /*! \todo (DB) change this naive implementation */
     DEBUG_output("%s : Halt at %d line \n", module, line);
 
     while(true)
