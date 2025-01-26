@@ -196,7 +196,7 @@ void DEBUG_dump(const uint8_t *buffer, uint8_t size, bool is_hex);
  * \param module module identifier as string
  * \param line line number at which halt occured
  */
-void DEBUG_halt(const char *module, uint16_t line) __attribute__((noreturn));
+__attribute__((noreturn)) void DEBUG_halt(const char *module, uint16_t line);
 
 /*!
  * \brief Initializes debug module
