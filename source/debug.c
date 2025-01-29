@@ -33,8 +33,19 @@
 #include <avr/pgmspace.h>
 
 /*! \todo (DB) pass the buffer value from outside */
-#define DEBUG_BUFFER_SIZE       (64U)
-#define RESERVED_CHARS_SIZE     (2U)
+#define DEBUG_BUFFER_SIZE               (64U)
+#define RESERVED_CHARS_SIZE             (2U)
+
+#define TOO_LONG_MSG_MARKER_IDX         (DEBUG_BUFFER_SIZE - 3U)
+#define TOO_LONG_MSG_MARKER_LF_IDX      (DEBUG_BUFFER_SIZE - 2U)
+#define TOO_LONG_MSG_MARKER_NULL_IDX    (DEBUG_BUFFER_SIZE - 1U)
+#define TOO_LONG_MSG_SIZE               (DEBUG_BUFFER_SIZE)
+
+#define ENCODING_ERROR_MSG_MARKER_IDX   (0U)
+#define ENCODING_ERROR_MSG_LF_IDX       (1U)
+#define ENCODING_ERROR_MSG_NULL_IDX     (2U)
+
+#define ENCODING_ERROR_MSG_SIZE         (3)
 
 static char debug_buffer[DEBUG_BUFFER_SIZE];
 
@@ -43,17 +54,29 @@ void DEBUG_output(const char *format, ...)
     va_list args;
     va_start( args, format);
 
-    memset(debug_buffer, 0u, DEBUG_BUFFER_SIZE);
+    (void) memset(debug_buffer, 0u, DEBUG_BUFFER_SIZE);
 
-    int written = vsnprintf(debug_buffer,
+    int16_t written = vsnprintf(debug_buffer,
             DEBUG_BUFFER_SIZE - RESERVED_CHARS_SIZE - 1U, format, args);
     va_end(args);
 
-    if(written > DEBUG_BUFFER_SIZE)
+    if(written < 0)
     {
-        written = DEBUG_BUFFER_SIZE;
-        debug_buffer[DEBUG_BUFFER_SIZE - 3U] = '~';
-        debug_buffer[DEBUG_BUFFER_SIZE - 2U] = '\n';
+        written = ENCODING_ERROR_MSG_SIZE;
+        debug_buffer[ENCODING_ERROR_MSG_MARKER_IDX] = '!';
+        debug_buffer[ENCODING_ERROR_MSG_LF_IDX] = '\n';
+        debug_buffer[ENCODING_ERROR_MSG_NULL_IDX] = 0;
+    }
+    if(((uint16_t) written) > DEBUG_BUFFER_SIZE)
+    {
+        written = TOO_LONG_MSG_SIZE;
+        debug_buffer[TOO_LONG_MSG_MARKER_IDX] = '~';
+        debug_buffer[TOO_LONG_MSG_MARKER_LF_IDX] = '\n';
+        debug_buffer[TOO_LONG_MSG_MARKER_NULL_IDX] = 0;
+    }
+    else
+    {
+        /* nothing to do here*/
     }
 
     for(uint8_t i = 0; i < written ; i++)
@@ -69,12 +92,14 @@ void DEBUG_dump(const uint8_t *buffer, uint8_t size, bool is_hex)
     uint8_t cnt = 0u;
     const uint8_t *buff = buffer;
     uint8_t len = size;
-    memset(debug_buffer, 0u, DEBUG_BUFFER_SIZE);
+    bool is_too_much = false;
 
-    while(len != 0U)
+    (void) memset(debug_buffer, 0u, DEBUG_BUFFER_SIZE);
+
+    while((len != 0U) && (!is_too_much))
     {
         uint8_t left_space = DEBUG_BUFFER_SIZE - RESERVED_CHARS_SIZE - offset - 1U;
-        uint8_t written = snprintf(&debug_buffer[offset], left_space,
+        int16_t written = snprintf(&debug_buffer[offset], left_space,
                 is_hex ? "%d:0x%02x\n" : "%d:%d\n" ,cnt, *buff);
 
         buff++;
@@ -83,7 +108,7 @@ void DEBUG_dump(const uint8_t *buffer, uint8_t size, bool is_hex)
         if(offset > DEBUG_BUFFER_SIZE)
         {
             offset = DEBUG_BUFFER_SIZE;
-            break;
+            is_too_much = true;
         }
 
         len--;
@@ -92,8 +117,8 @@ void DEBUG_dump(const uint8_t *buffer, uint8_t size, bool is_hex)
 
     if(offset == DEBUG_BUFFER_SIZE)
     {
-        debug_buffer[DEBUG_BUFFER_SIZE - 3U] = '~';
-        debug_buffer[DEBUG_BUFFER_SIZE - 2U] = '\n';
+        debug_buffer[TOO_LONG_MSG_MARKER_IDX] = '~';
+        debug_buffer[TOO_LONG_MSG_MARKER_LF_IDX] = '\n';
     }
     else
     {

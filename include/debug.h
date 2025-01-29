@@ -174,11 +174,16 @@
 
 /* \todo (DB) This structure seems to be unused currently */
 /*!
+ * \struct DEBUG_config_t
+ *
  * \brief Debug module configuration structure
+ *
+ * \var DEBUG_config_t::baudrate
+ *      Baudrate
  */
 typedef struct
 {
-    uint32_t baudrate; /*!< Baudrate */
+    uint32_t baudrate;
 } DEBUG_config_t;
 
 /*!
